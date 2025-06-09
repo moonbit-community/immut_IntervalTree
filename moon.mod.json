@@ -1,0 +1,10 @@
+{
+  "name": "kesmeey/immut_IntervalTree",
+  "version": "0.1.0",
+  "readme": "README.md",
+  "repository": "",
+  "license": "Apache-2.0",
+  "keywords": [ "data-structures", "interval-tree","immutable"],
+  "description": "Experimenting with implementing an immutable interval tree in Moonbit",
+  "source": "src"
+}
