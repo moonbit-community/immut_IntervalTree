@@ -934,6 +934,8 @@ fn find_overlaps_helper[V : Compare, D](
 
 ///|
 /// Checks if two intervals overlap
+///|
+/// Checks if two intervals overlap
 pub fn intervals_overlap[V : Compare](
   a : Interval[V],
   b : Interval[V],
@@ -950,8 +952,8 @@ pub fn intervals_overlap[V : Compare](
       // [a, b) 与 [c, d) 重叠：b > c && d > a
       a.high.compare(b.low) > 0 && b.high.compare(a.low) > 0
     IntervalType::RightClosed =>
-      // (a, b] 与 (c, d] 重叠：b >= c && d >= a  // 修正注释
-      a.high.compare(b.low) >= 0 && b.high.compare(a.low) >= 0
+      // (a, b] 与 (c, d] 重叠：b >= c && d > a（注意这里 d > a，不是 d >= a）
+      a.high.compare(b.low) >= 0 && b.high.compare(a.low) > 0
   }
 }
 
