@@ -1,11 +1,11 @@
 ///|
-pub fn[V : Compare, D] new() -> T[V, D] {
+pub fn[V, D] new() -> T[V, D] {
   { root: None, size: 0, options: default_options() }
 }
 
 ///|
 /// Creates a new interval tree with options.
-pub fn[V : Compare, D] new_with_options(options : IntervalOptions) -> T[V, D] {
+pub fn[V, D] new_with_options(options : IntervalOptions) -> T[V, D] {
   { root: None, size: 0, options }
 }
 
@@ -65,7 +65,7 @@ pub fn[V : Compare, D] insert(
       Some(_) =>
         // 在不可变实现中，我们需要创建一个新树，更新匹配节点的数据
         return self.replace_exact(interval, data)
-      None => ignore(None)
+      None => ()
     }
   }
   let new_node = {
@@ -300,7 +300,7 @@ pub fn[V : Compare, D] update_height_and_max_high_immut(
 ) -> Node[V, D] {
   // 计算新的高度
   let new_height = 1 +
-    @math.maximum(
+    @cmp.maximum(
       match node.left {
         Some(left) => left.height
         None => 0
@@ -318,14 +318,14 @@ pub fn[V : Compare, D] update_height_and_max_high_immut(
       if left.max_high.compare(new_max_high) > 0 {
         new_max_high = left.max_high
       }
-    None => ignore(None)
+    None => ()
   }
   match node.right {
     Some(right) =>
       if right.max_high.compare(new_max_high) > 0 {
         new_max_high = right.max_high
       }
-    None => ignore(None)
+    None => ()
   }
 
   // 创建并返回新节点
@@ -714,7 +714,7 @@ pub fn[V : Compare, D] replace_exact_helper(
 ///|
 /// Clears all intervals from the tree.
 /// Returns a new empty tree with the same options.
-pub fn[V : Compare, D] clear(self : T[V, D]) -> T[V, D] {
+pub fn[V, D] clear(self : T[V, D]) -> T[V, D] {
   new_with_options(self.options)
 }
 
@@ -752,7 +752,7 @@ pub fn[V : Compare, D] balance_immut(node : Node[V, D]) -> Node[V, D] {
           }
           return right_rotate_immut(new_node)
         }
-      None => ignore(node) // 理论上不应该发生
+      None => () // 理论上不应该发生
     }
     // 右子树高 - 需要左旋或右左旋
   } else if balance < -1 {
@@ -775,7 +775,7 @@ pub fn[V : Compare, D] balance_immut(node : Node[V, D]) -> Node[V, D] {
           }
           return left_rotate_immut(new_node)
         }
-      None => ignore(node) // 理论上不应该发生
+      None => () // 理论上不应该发生
     }
   }
 
@@ -799,7 +799,7 @@ pub fn[V, D] get_balance(node : Node[V, D]) -> Int {
 
 ///|
 /// 将树中的所有区间及其数据转换为数组
-pub fn[V : Compare, D] to_array(self : T[V, D]) -> Array[IntervalMatch[V, D]] {
+pub fn[V, D] to_array(self : T[V, D]) -> Array[IntervalMatch[V, D]] {
   let results = []
 
   // 使用中序遍历收集所有节点

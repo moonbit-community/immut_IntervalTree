@@ -297,7 +297,7 @@ test "contains_immut" {
   assert_false(tree.contains(Interval::{ low: 30, high: 40 }))
 
   // 空树测试
-  let empty_tree = @immut_IntervalTree.new()
+  let empty_tree : @immut_IntervalTree.T[Int, String] = @immut_IntervalTree.new()
   assert_false(empty_tree.contains(Interval::{ low: 10, high: 20 }))
 }
 
@@ -337,7 +337,7 @@ test "to_array_immut" {
   assert_true(has_c)
 
   // 空树测试
-  let empty_tree = @immut_IntervalTree.new()
+  let empty_tree : @immut_IntervalTree.T[Int, String] = @immut_IntervalTree.new()
   assert_eq(empty_tree.to_array().length(), 0)
 }
 
@@ -481,7 +481,7 @@ test "edge_cases_immut" {
   assert_eq(tree_after_delete.size, 1) // 应保持不变
 
   // 测试在空树上执行操作
-  let empty_tree = @immut_IntervalTree.new()
+  let empty_tree : @immut_IntervalTree.T[Int, String] = @immut_IntervalTree.new()
   assert_eq(
     empty_tree.find_overlaps(Interval::{ low: 10, high: 20 }).length(),
     0,
@@ -993,7 +993,8 @@ test "interval_type_combinations_immut" {
 /// 测试from_array的边界情况
 test "from_array_edge_cases_immut" {
   // 测试空数组
-  let empty_tree = @immut_IntervalTree.from_array([])
+  let empty_tree : @immut_IntervalTree.T[Int, String] = @immut_IntervalTree.from_array([],
+  )
   assert_eq(empty_tree.size, 0)
 
   // 测试单个元素数组
@@ -1011,7 +1012,7 @@ test "from_array_edge_cases_immut" {
   assert_eq(mixed_tree.size, 2) // 只有有效区间被插入
 
   // 测试大量重复区间
-  let duplicates = []
+  let duplicates : Array[(Interval[Int], String)] = []
   for i = 1; i <= 10; i = i + 1 {
     duplicates.push((Interval::{ low: 10, high: 20 }, "Dup\{i}"))
   }
