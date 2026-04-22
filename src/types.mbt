@@ -95,7 +95,10 @@ pub(all) struct IntervalMatch[T, D] {
 } derive(Eq)
 
 ///|
-pub impl[T : Show, D : Show] Show for IntervalMatch[T, D] with output(self, logger) {
+pub impl[T : Show, D : Show] Show for IntervalMatch[T, D] with output(
+  self,
+  logger,
+) {
   logger.write_string("{interval: ")
   logger.write_object(self.interval)
   logger.write_string(", data: ")

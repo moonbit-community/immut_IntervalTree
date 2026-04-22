@@ -14,7 +14,7 @@ pub fn[V, D] new_with_options(options : IntervalOptions) -> T[V, D] {
 pub fn[V : Compare, D] singleton(
   interval : Interval[V],
   data : D,
-  options~ : IntervalOptions = default_options(),
+  options? : IntervalOptions = default_options(),
 ) -> T[V, D] {
   // 直接创建包含一个节点的树，而不是修改现有树
   if is_valid_interval(interval) == false {
@@ -35,7 +35,7 @@ pub fn[V : Compare, D] singleton(
 /// Creates a new interval tree from an array of intervals and data.
 pub fn[V : Compare, D] from_array(
   intervals : Array[(Interval[V], D)],
-  options~ : IntervalOptions = default_options(),
+  options? : IntervalOptions = default_options(),
 ) -> T[V, D] {
   // 使用折叠操作构建不可变树，而不是通过修改来构建
   intervals.fold(init=new_with_options(options), fn(tree, pair) {
@@ -122,7 +122,7 @@ pub struct InsertResult[V, D] {
 pub fn[V : Compare, D] insert_node_immut(
   node : Node[V, D],
   new_node : Node[V, D],
-  allow_duplicates~ : Bool = false,
+  allow_duplicates? : Bool = false,
 ) -> InsertResult[V, D] {
   // 使用低端点作为BST键
   let comp = new_node.interval.low.compare(node.interval.low)
@@ -619,7 +619,10 @@ pub fn[V : Compare, D] T::replace_exact(
 
 ///|
 /// Finds an exact match for an interval in the tree
-pub fn[V : Compare, D] T::find_exact(self : T[V, D], interval : Interval[V]) -> D? {
+pub fn[V : Compare, D] T::find_exact(
+  self : T[V, D],
+  interval : Interval[V],
+) -> D? {
   match self.root {
     None => None
     Some(root) => find_exact_in_node(root, interval)
@@ -825,7 +828,10 @@ pub fn[V, D] T::to_array(self : T[V, D]) -> Array[IntervalMatch[V, D]] {
 
 ///|
 /// 检查树中是否存在指定的区间
-pub fn[V : Compare, D] T::contains(self : T[V, D], interval : Interval[V]) -> Bool {
+pub fn[V : Compare, D] T::contains(
+  self : T[V, D],
+  interval : Interval[V],
+) -> Bool {
   match self.find_exact(interval) {
     Some(_) => true
     None => false
@@ -943,7 +949,7 @@ fn[V : Compare, D] find_overlaps_helper(
 pub fn[V : Compare] intervals_overlap(
   a : Interval[V],
   b : Interval[V],
-  interval_type~ : IntervalType = IntervalType::Closed,
+  interval_type? : IntervalType = IntervalType::Closed,
 ) -> Bool {
   match interval_type {
     IntervalType::Closed =>
@@ -966,7 +972,7 @@ pub fn[V : Compare] intervals_overlap(
 pub fn[V : Compare] interval_contains(
   a : Interval[V],
   b : Interval[V],
-  interval_type~ : IntervalType = IntervalType::Closed,
+  interval_type? : IntervalType = IntervalType::Closed,
 ) -> Bool {
   match interval_type {
     IntervalType::Closed =>
@@ -993,7 +999,7 @@ pub fn[V : Compare] interval_contains(
 pub fn[V : Compare] endpoints_leq(
   a : V,
   b : V,
-  interval_type~ : IntervalType = IntervalType::Closed,
+  interval_type? : IntervalType = IntervalType::Closed,
 ) -> Bool {
   match interval_type {
     IntervalType::Closed => a.compare(b) <= 0
@@ -1008,7 +1014,7 @@ pub fn[V : Compare] endpoints_leq(
 pub fn[V : Compare] endpoints_geq(
   a : V,
   b : V,
-  interval_type~ : IntervalType = IntervalType::Closed,
+  interval_type? : IntervalType = IntervalType::Closed,
 ) -> Bool {
   match interval_type {
     IntervalType::Closed => a.compare(b) >= 0
