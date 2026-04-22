@@ -47,7 +47,7 @@ pub fn[V : Compare, D] from_array(
 ///|
 /// Inserts an interval with associated data into the tree.
 /// Returns a new tree with the interval inserted.
-pub fn[V : Compare, D] insert(
+pub fn[V : Compare, D] T::insert(
   self : T[V, D],
   interval : Interval[V],
   data : D,
@@ -433,7 +433,7 @@ pub fn[V : Compare, D] left_rotate_immut(x : Node[V, D]) -> Node[V, D] {
 ///|
 /// Removes an interval from the tree.
 /// Returns a new tree with the interval removed.
-pub fn[V : Compare, D] remove(
+pub fn[V : Compare, D] T::remove(
   self : T[V, D],
   interval : Interval[V],
 ) -> T[V, D] {
@@ -599,7 +599,7 @@ pub fn[V, D] find_min_immut(node : Node[V, D]) -> Node[V, D] {
 
 ///|
 /// Replace data for an exactly matching interval
-pub fn[V : Compare, D] replace_exact(
+pub fn[V : Compare, D] T::replace_exact(
   self : T[V, D],
   interval : Interval[V],
   new_data : D,
@@ -619,7 +619,7 @@ pub fn[V : Compare, D] replace_exact(
 
 ///|
 /// Finds an exact match for an interval in the tree
-pub fn[V : Compare, D] find_exact(self : T[V, D], interval : Interval[V]) -> D? {
+pub fn[V : Compare, D] T::find_exact(self : T[V, D], interval : Interval[V]) -> D? {
   match self.root {
     None => None
     Some(root) => find_exact_in_node(root, interval)
@@ -714,7 +714,7 @@ pub fn[V : Compare, D] replace_exact_helper(
 ///|
 /// Clears all intervals from the tree.
 /// Returns a new empty tree with the same options.
-pub fn[V, D] clear(self : T[V, D]) -> T[V, D] {
+pub fn[V, D] T::clear(self : T[V, D]) -> T[V, D] {
   new_with_options(self.options)
 }
 
@@ -799,7 +799,7 @@ pub fn[V, D] get_balance(node : Node[V, D]) -> Int {
 
 ///|
 /// 将树中的所有区间及其数据转换为数组
-pub fn[V, D] to_array(self : T[V, D]) -> Array[IntervalMatch[V, D]] {
+pub fn[V, D] T::to_array(self : T[V, D]) -> Array[IntervalMatch[V, D]] {
   let results = []
 
   // 使用中序遍历收集所有节点
@@ -825,7 +825,7 @@ pub fn[V, D] to_array(self : T[V, D]) -> Array[IntervalMatch[V, D]] {
 
 ///|
 /// 检查树中是否存在指定的区间
-pub fn[V : Compare, D] contains(self : T[V, D], interval : Interval[V]) -> Bool {
+pub fn[V : Compare, D] T::contains(self : T[V, D], interval : Interval[V]) -> Bool {
   match self.find_exact(interval) {
     Some(_) => true
     None => false
@@ -835,7 +835,7 @@ pub fn[V : Compare, D] contains(self : T[V, D], interval : Interval[V]) -> Bool 
 ///|
 /// 查找被给定区间完全包含的所有区间
 /// 返回包含匹配区间和数据的数组
-pub fn[V : Compare, D] find_contained(
+pub fn[V : Compare, D] T::find_contained(
   self : T[V, D],
   container : Interval[V],
 ) -> Array[IntervalMatch[V, D]] {
@@ -886,7 +886,7 @@ fn[V : Compare, D] find_contained_helper(
 ///|
 /// 查找与给定区间重叠的所有区间
 /// 返回包含匹配区间和数据的数组
-pub fn[V : Compare, D] find_overlaps(
+pub fn[V : Compare, D] T::find_overlaps(
   self : T[V, D],
   interval : Interval[V],
 ) -> Array[IntervalMatch[V, D]] {
