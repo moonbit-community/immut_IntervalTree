@@ -21,7 +21,16 @@
 pub(all) struct Interval[T] {
   low : T // 区间低端点
   high : T // 区间高端点
-} derive(Eq, Show)
+} derive(Eq)
+
+///|
+pub impl[T : Show] Show for Interval[T] with output(self, logger) {
+  logger.write_string("{low: ")
+  logger.write_object(self.low)
+  logger.write_string(", high: ")
+  logger.write_object(self.high)
+  logger.write_string("}")
+}
 
 ///|
 /// The main immutable interval tree container
@@ -40,7 +49,24 @@ pub(all) struct Node[V, D] {
   left : Node[V, D]? // 左子树
   right : Node[V, D]? // 右子树
   height : Int // 节点高度，用于平衡
-} derive(Eq, Show)
+} derive(Eq)
+
+///|
+pub impl[V : Show, D : Show] Show for Node[V, D] with output(self, logger) {
+  logger.write_string("{interval: ")
+  logger.write_object(self.interval)
+  logger.write_string(", data: ")
+  logger.write_object(self.data)
+  logger.write_string(", max_high: ")
+  logger.write_object(self.max_high)
+  logger.write_string(", left: ")
+  logger.write_object(self.left)
+  logger.write_string(", right: ")
+  logger.write_object(self.right)
+  logger.write_string(", height: ")
+  logger.write_object(self.height)
+  logger.write_string("}")
+}
 
 ///|
 /// Represents the type of interval: closed [a,b], open (a,b), or half-open [a,b) or (a,b]
@@ -49,21 +75,49 @@ pub(all) enum IntervalType {
   Open // (a,b) - 不包含任何端点
   LeftClosed // [a,b) - 包含左端点，不包含右端点
   RightClosed // (a,b] - 不包含左端点，包含右端点
-} derive(Eq, Show)
+} derive(Eq)
+
+///|
+pub impl Show for IntervalType with output(self, logger) {
+  match self {
+    Closed => logger.write_string("Closed")
+    Open => logger.write_string("Open")
+    LeftClosed => logger.write_string("LeftClosed")
+    RightClosed => logger.write_string("RightClosed")
+  }
+}
 
 ///|
 /// Result of an interval query, containing the interval and associated data
 pub(all) struct IntervalMatch[T, D] {
   interval : Interval[T] // 匹配的区间
   data : D // 关联的数据
-} derive(Eq, Show)
+} derive(Eq)
+
+///|
+pub impl[T : Show, D : Show] Show for IntervalMatch[T, D] with output(self, logger) {
+  logger.write_string("{interval: ")
+  logger.write_object(self.interval)
+  logger.write_string(", data: ")
+  logger.write_object(self.data)
+  logger.write_string("}")
+}
 
 ///|
 /// Options for interval operations
 pub(all) struct IntervalOptions {
   interval_type : IntervalType // 区间类型，默认为闭区间
   allow_duplicates : Bool // 是否允许重复区间，默认为false
-} derive(Eq, Show)
+} derive(Eq)
+
+///|
+pub impl Show for IntervalOptions with output(self, logger) {
+  logger.write_string("{interval_type: ")
+  logger.write_object(self.interval_type)
+  logger.write_string(", allow_duplicates: ")
+  logger.write_object(self.allow_duplicates)
+  logger.write_string("}")
+}
 
 ///|
 /// Default interval options: closed intervals with no duplicates allowed
