@@ -1,4 +1,7 @@
 ///|
+using @test {assert_eq}
+
+///|
 /// 测试创建空树
 test "new_empty_immut_tree" {
   let tree : T[Int, String] = @immut_IntervalTree.new()

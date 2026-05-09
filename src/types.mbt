@@ -21,7 +21,7 @@
 pub(all) struct Interval[T] {
   low : T // 区间低端点
   high : T // 区间高端点
-} derive(Eq)
+} derive(Eq, Debug)
 
 ///|
 pub impl[T : Show] Show for Interval[T] with output(self, logger) {
@@ -38,7 +38,7 @@ pub(all) struct T[V, D] {
   root : Node[V, D]? // 根节点
   size : Int // 区间数量
   options : IntervalOptions // 区间操作选项
-}
+} derive(Debug)
 
 ///|
 /// Internal node structure for the immutable interval tree
@@ -49,10 +49,21 @@ pub(all) struct Node[V, D] {
   left : Node[V, D]? // 左子树
   right : Node[V, D]? // 右子树
   height : Int // 节点高度，用于平衡
-} derive(Eq)
+} derive(Eq, Debug)
 
 ///|
 pub impl[V : Show, D : Show] Show for Node[V, D] with output(self, logger) {
+  fn write_node_option(node : Node[V, D]?, logger : &Logger) -> Unit {
+    match node {
+      None => logger.write_string("None")
+      Some(node) => {
+        logger.write_string("Some(")
+        node.output(logger)
+        logger.write_string(")")
+      }
+    }
+  }
+
   logger.write_string("{interval: ")
   logger.write_object(self.interval)
   logger.write_string(", data: ")
@@ -60,9 +71,9 @@ pub impl[V : Show, D : Show] Show for Node[V, D] with output(self, logger) {
   logger.write_string(", max_high: ")
   logger.write_object(self.max_high)
   logger.write_string(", left: ")
-  logger.write_object(self.left)
+  write_node_option(self.left, logger)
   logger.write_string(", right: ")
-  logger.write_object(self.right)
+  write_node_option(self.right, logger)
   logger.write_string(", height: ")
   logger.write_object(self.height)
   logger.write_string("}")
@@ -75,7 +86,7 @@ pub(all) enum IntervalType {
   Open // (a,b) - 不包含任何端点
   LeftClosed // [a,b) - 包含左端点，不包含右端点
   RightClosed // (a,b] - 不包含左端点，包含右端点
-} derive(Eq)
+} derive(Eq, Debug)
 
 ///|
 pub impl Show for IntervalType with output(self, logger) {
@@ -92,7 +103,7 @@ pub impl Show for IntervalType with output(self, logger) {
 pub(all) struct IntervalMatch[T, D] {
   interval : Interval[T] // 匹配的区间
   data : D // 关联的数据
-} derive(Eq)
+} derive(Eq, Debug)
 
 ///|
 pub impl[T : Show, D : Show] Show for IntervalMatch[T, D] with output(
@@ -111,7 +122,7 @@ pub impl[T : Show, D : Show] Show for IntervalMatch[T, D] with output(
 pub(all) struct IntervalOptions {
   interval_type : IntervalType // 区间类型，默认为闭区间
   allow_duplicates : Bool // 是否允许重复区间，默认为false
-} derive(Eq)
+} derive(Eq, Debug)
 
 ///|
 pub impl Show for IntervalOptions with output(self, logger) {

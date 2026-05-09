@@ -1,6 +1,10 @@
 // Generated using `moon info`, DON'T EDIT IT
 package "kesmeey/immut_IntervalTree"
 
+import {
+  "moonbitlang/core/debug",
+}
+
 // Values
 pub fn[V : Compare, D] balance_immut(Node[V, D]) -> Node[V, D]
 
@@ -55,19 +59,19 @@ pub struct InsertResult[V, D] {
 pub(all) struct Interval[T] {
   low : T
   high : T
-} derive(Eq)
+} derive(Eq, @debug.Debug)
 pub impl[T : Show] Show for Interval[T]
 
 pub(all) struct IntervalMatch[T, D] {
   interval : Interval[T]
   data : D
-} derive(Eq)
+} derive(Eq, @debug.Debug)
 pub impl[T : Show, D : Show] Show for IntervalMatch[T, D]
 
 pub(all) struct IntervalOptions {
   interval_type : IntervalType
   allow_duplicates : Bool
-} derive(Eq)
+} derive(Eq, @debug.Debug)
 pub impl Show for IntervalOptions
 
 pub(all) enum IntervalType {
@@ -75,7 +79,7 @@ pub(all) enum IntervalType {
   Open
   LeftClosed
   RightClosed
-} derive(Eq)
+} derive(Eq, @debug.Debug)
 pub impl Show for IntervalType
 
 pub(all) struct Node[V, D] {
@@ -85,7 +89,7 @@ pub(all) struct Node[V, D] {
   left : Node[V, D]?
   right : Node[V, D]?
   height : Int
-} derive(Eq)
+} derive(Eq, @debug.Debug)
 pub impl[V : Show, D : Show] Show for Node[V, D]
 
 pub struct RemoveResult[V, D] {
@@ -97,7 +101,7 @@ pub(all) struct T[V, D] {
   root : Node[V, D]?
   size : Int
   options : IntervalOptions
-}
+} derive(@debug.Debug)
 pub fn[V, D] T::clear(Self[V, D]) -> Self[V, D]
 pub fn[V : Compare, D] T::contains(Self[V, D], Interval[V]) -> Bool
 pub fn[V : Compare, D] T::find_contained(Self[V, D], Interval[V]) -> Array[IntervalMatch[V, D]]
