@@ -436,7 +436,6 @@ test "non_integer_keys_immut" {
     .insert(Interval::{ low: "apple", high: "zebra" }, 1) // 都是5个字符
     .insert(Interval::{ low: "hello", high: "world" }, 2) // 都是5个字符
     .insert(Interval::{ low: "cat", high: "dog" }, 3) // 都是3个字符
-  println(string_tree.to_array())
 
   // 测试查找
   assert_eq(
@@ -513,7 +512,6 @@ test "allow_duplicates_immut" {
   // 查找重叠区间
   let overlaps = tree.find_overlaps(Interval::{ low: 10, high: 20 })
   assert_eq(overlaps.length(), 2)
-  println(tree.to_array())
   // 查找精确匹配
 
   assert_eq(tree.find_exact(Interval::{ low: 10, high: 20 }), Some("A1"))
