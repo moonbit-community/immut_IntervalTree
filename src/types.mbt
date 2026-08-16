@@ -24,7 +24,13 @@ pub(all) struct Interval[T] {
 } derive(Eq, Debug)
 
 ///|
-pub impl[T : Show] Show for Interval[T] with output(self, logger) {
+pub extend Interval with Eq::{not_equal, equal}
+
+///|
+pub extend Interval with Debug::{to_repr}
+
+///|
+pub impl[T : Show] Show for Interval[T] with fn output(self, logger) {
   logger.write_string("{low: ")
   logger.write_object(self.low)
   logger.write_string(", high: ")
@@ -33,12 +39,18 @@ pub impl[T : Show] Show for Interval[T] with output(self, logger) {
 }
 
 ///|
+pub extend Interval with Show::{to_string, output}
+
+///|
 /// The main immutable interval tree container
 pub(all) struct T[V, D] {
   root : Node[V, D]? // 根节点
   size : Int // 区间数量
   options : IntervalOptions // 区间操作选项
 } derive(Debug)
+
+///|
+pub extend T with Debug::{to_repr}
 
 ///|
 /// Internal node structure for the immutable interval tree
@@ -52,7 +64,13 @@ pub(all) struct Node[V, D] {
 } derive(Eq, Debug)
 
 ///|
-pub impl[V : Show, D : Show] Show for Node[V, D] with output(self, logger) {
+pub extend Node with Eq::{not_equal, equal}
+
+///|
+pub extend Node with Debug::{to_repr}
+
+///|
+pub impl[V : Show, D : Show] Show for Node[V, D] with fn output(self, logger) {
   fn write_node_option(node : Node[V, D]?, logger : &Logger) -> Unit {
     match node {
       None => logger.write_string("None")
@@ -80,6 +98,9 @@ pub impl[V : Show, D : Show] Show for Node[V, D] with output(self, logger) {
 }
 
 ///|
+pub extend Node with Show::{to_string, output}
+
+///|
 /// Represents the type of interval: closed [a,b], open (a,b), or half-open [a,b) or (a,b]
 pub(all) enum IntervalType {
   Closed // [a,b] - 包含两个端点
@@ -89,7 +110,13 @@ pub(all) enum IntervalType {
 } derive(Eq, Debug)
 
 ///|
-pub impl Show for IntervalType with output(self, logger) {
+pub extend IntervalType with Eq::{not_equal, equal}
+
+///|
+pub extend IntervalType with Debug::{to_repr}
+
+///|
+pub impl Show for IntervalType with fn output(self, logger) {
   match self {
     Closed => logger.write_string("Closed")
     Open => logger.write_string("Open")
@@ -99,6 +126,9 @@ pub impl Show for IntervalType with output(self, logger) {
 }
 
 ///|
+pub extend IntervalType with Show::{to_string, output}
+
+///|
 /// Result of an interval query, containing the interval and associated data
 pub(all) struct IntervalMatch[T, D] {
   interval : Interval[T] // 匹配的区间
@@ -106,7 +136,13 @@ pub(all) struct IntervalMatch[T, D] {
 } derive(Eq, Debug)
 
 ///|
-pub impl[T : Show, D : Show] Show for IntervalMatch[T, D] with output(
+pub extend IntervalMatch with Eq::{not_equal, equal}
+
+///|
+pub extend IntervalMatch with Debug::{to_repr}
+
+///|
+pub impl[T : Show, D : Show] Show for IntervalMatch[T, D] with fn output(
   self,
   logger,
 ) {
@@ -118,6 +154,9 @@ pub impl[T : Show, D : Show] Show for IntervalMatch[T, D] with output(
 }
 
 ///|
+pub extend IntervalMatch with Show::{to_string, output}
+
+///|
 /// Options for interval operations
 pub(all) struct IntervalOptions {
   interval_type : IntervalType // 区间类型，默认为闭区间
@@ -125,13 +164,22 @@ pub(all) struct IntervalOptions {
 } derive(Eq, Debug)
 
 ///|
-pub impl Show for IntervalOptions with output(self, logger) {
+pub extend IntervalOptions with Eq::{not_equal, equal}
+
+///|
+pub extend IntervalOptions with Debug::{to_repr}
+
+///|
+pub impl Show for IntervalOptions with fn output(self, logger) {
   logger.write_string("{interval_type: ")
   logger.write_object(self.interval_type)
   logger.write_string(", allow_duplicates: ")
   logger.write_object(self.allow_duplicates)
   logger.write_string("}")
 }
+
+///|
+pub extend IntervalOptions with Show::{to_string, output}
 
 ///|
 /// Default interval options: closed intervals with no duplicates allowed
