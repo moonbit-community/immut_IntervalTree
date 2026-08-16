@@ -60,18 +60,33 @@ pub(all) struct Interval[T] {
   low : T
   high : T
 } derive(Eq, @debug.Debug)
+pub fn[T : Eq] Interval::equal(Self[T], Self[T]) -> Bool
+pub fn[T : Eq] Interval::not_equal(Self[T], Self[T]) -> Bool
+pub fn[T : Show] Interval::output(Self[T], &Logger) -> Unit
+pub fn[T : @debug.Debug] Interval::to_repr(Self[T]) -> @debug.Repr
+pub fn[T : Show] Interval::to_string(Self[T]) -> String
 pub impl[T : Show] Show for Interval[T]
 
 pub(all) struct IntervalMatch[T, D] {
   interval : Interval[T]
   data : D
 } derive(Eq, @debug.Debug)
+pub fn[T : Eq, D : Eq] IntervalMatch::equal(Self[T, D], Self[T, D]) -> Bool
+pub fn[T : Eq, D : Eq] IntervalMatch::not_equal(Self[T, D], Self[T, D]) -> Bool
+pub fn[T : Show, D : Show] IntervalMatch::output(Self[T, D], &Logger) -> Unit
+pub fn[T : @debug.Debug, D : @debug.Debug] IntervalMatch::to_repr(Self[T, D]) -> @debug.Repr
+pub fn[T : Show, D : Show] IntervalMatch::to_string(Self[T, D]) -> String
 pub impl[T : Show, D : Show] Show for IntervalMatch[T, D]
 
 pub(all) struct IntervalOptions {
   interval_type : IntervalType
   allow_duplicates : Bool
 } derive(Eq, @debug.Debug)
+pub fn IntervalOptions::equal(Self, Self) -> Bool
+pub fn IntervalOptions::not_equal(Self, Self) -> Bool
+pub fn IntervalOptions::output(Self, &Logger) -> Unit
+pub fn IntervalOptions::to_repr(Self) -> @debug.Repr
+pub fn IntervalOptions::to_string(Self) -> String
 pub impl Show for IntervalOptions
 
 pub(all) enum IntervalType {
@@ -80,6 +95,11 @@ pub(all) enum IntervalType {
   LeftClosed
   RightClosed
 } derive(Eq, @debug.Debug)
+pub fn IntervalType::equal(Self, Self) -> Bool
+pub fn IntervalType::not_equal(Self, Self) -> Bool
+pub fn IntervalType::output(Self, &Logger) -> Unit
+pub fn IntervalType::to_repr(Self) -> @debug.Repr
+pub fn IntervalType::to_string(Self) -> String
 pub impl Show for IntervalType
 
 pub(all) struct Node[V, D] {
@@ -90,6 +110,11 @@ pub(all) struct Node[V, D] {
   right : Node[V, D]?
   height : Int
 } derive(Eq, @debug.Debug)
+pub fn[V : Eq, D : Eq] Node::equal(Self[V, D], Self[V, D]) -> Bool
+pub fn[V : Eq, D : Eq] Node::not_equal(Self[V, D], Self[V, D]) -> Bool
+pub fn[V : Show, D : Show] Node::output(Self[V, D], &Logger) -> Unit
+pub fn[V : @debug.Debug, D : @debug.Debug] Node::to_repr(Self[V, D]) -> @debug.Repr
+pub fn[V : Show, D : Show] Node::to_string(Self[V, D]) -> String
 pub impl[V : Show, D : Show] Show for Node[V, D]
 
 pub struct RemoveResult[V, D] {
@@ -111,8 +136,8 @@ pub fn[V : Compare, D] T::insert(Self[V, D], Interval[V], D) -> Self[V, D]
 pub fn[V : Compare, D] T::remove(Self[V, D], Interval[V]) -> Self[V, D]
 pub fn[V : Compare, D] T::replace_exact(Self[V, D], Interval[V], D) -> Self[V, D]
 pub fn[V, D] T::to_array(Self[V, D]) -> Array[IntervalMatch[V, D]]
+pub fn[V : @debug.Debug, D : @debug.Debug] T::to_repr(Self[V, D]) -> @debug.Repr
 
 // Type aliases
 
 // Traits
-
